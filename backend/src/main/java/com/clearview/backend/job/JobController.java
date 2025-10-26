@@ -3,10 +3,12 @@ package com.clearview.backend.job;
 import com.clearview.backend.customer.Customer;
 import com.clearview.backend.job.dto.JobDto;
 import com.clearview.backend.job.dto.JobRequest;
+import com.clearview.backend.job.dto.RevenueDto;
 import com.clearview.backend.user.User;
 import com.clearview.backend.user.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,11 +32,10 @@ public class JobController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return ResponseEntity.ok(
-            jobService.getJobsByUser(user.getId())
-                      .stream()
-                      .map(JobDto::from)
-                      .toList()
-        );
+                jobService.getJobsByUser(user.getId())
+                        .stream()
+                        .map(JobDto::from)
+                        .toList());
     }
 
     // === Create new job ===
@@ -97,4 +98,10 @@ public class JobController {
         jobService.deleteJob(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/revenue")
+    public List<RevenueDto> getRevenue(Authentication auth) {
+        return jobService.getRevenueForUser(auth);
+    }
+
 }

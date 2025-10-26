@@ -7,14 +7,18 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "chart.js": "^4.5.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.544.0",
     "mapbox-gl": "^3.15.0",
     "react": "^19.1.1",
     "react-bits": "^1.0.5",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
     "react-leaflet": "^5.0.0",
@@ -25,6 +29,10 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@tailwindcss/postcss": "^4.1.13",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/mapbox-gl": "^3.4.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
@@ -34,10 +42,12 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "jsdom": "^27.0.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
   }
 }

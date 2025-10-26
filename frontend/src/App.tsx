@@ -10,6 +10,7 @@ import JobDetailsPage from "./pages/JobDetailsPage";
 import JobListPage from "./pages/JobListPage";
 import NewCustomerPage from "./pages/NewCustomerPage";
 import type { JSX } from "react";
+import RevenuePage from "./pages/RevenuePage";
 
 // Protect private routes
 function ProtectedRoute({ children }: { children: JSX.Element }) {
@@ -85,6 +86,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <NewCustomerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenue"
+          element={
+            <ProtectedRoute>
+              <RevenuePage />
             </ProtectedRoute>
           }
         />

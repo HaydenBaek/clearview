@@ -2,6 +2,8 @@ package com.clearview.backend.job;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 import com.clearview.backend.customer.Customer;
 import com.clearview.backend.user.User;
 

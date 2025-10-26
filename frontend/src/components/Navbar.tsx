@@ -23,13 +23,19 @@ export default function Navbar({ onLogout }: NavbarProps) {
           <h1 className="text-base font-semibold tracking-tight">ClearView</h1>
         </div>
 
-        {/* Right side: Map + Logout */}
+        {/* Right side: Navigation + Logout */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate("/map")}
             className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
           >
             Map
+          </button>
+          <button
+            onClick={() => navigate("/revenue")}
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
+          >
+            Revenue
           </button>
           {onLogout && (
             <button

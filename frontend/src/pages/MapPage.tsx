@@ -91,11 +91,17 @@ export default function MapPage() {
           style={{ width: "100%", height: "100%", position: "absolute" }}
           mapStyle="mapbox://styles/mapbox/streets-v12"
         >
-          {marker && (
-            <Marker latitude={marker.lat} longitude={marker.lng}>
-              <div className="w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg animate-pulse" />
-            </Marker>
-          )}
+{marker && (
+  <Marker latitude={marker.lat} longitude={marker.lng} anchor="center">
+    <div className="relative flex items-center justify-center">
+      {/* Ripple feedback */}
+      <span className="absolute h-8 w-8 rounded-full bg-red-400 opacity-60 animate-ping"></span>
+      {/* Actual pin */}
+      <span className="relative z-10 h-4 w-4 rounded-full bg-red-600 border-2 border-white shadow-md" />
+    </div>
+  </Marker>
+)}
+
         </Map>
 
         {/* Loading overlay */}

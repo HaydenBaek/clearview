@@ -1,7 +1,8 @@
 // src/pages/NewJobPage.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Listbox } from "@headlessui/react";
 
 type Customer = {
   id: number;
@@ -197,32 +198,62 @@ export default function NewJobPage() {
             </div>
           </div>
         ) : (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Select Customer
-            </label>
-            <select
-              value={selectedCustomer?.id || ""}
-              onChange={(e) => {
-                const customer = customers.find((c) => c.id === Number(e.target.value)) || null;
-                setSelectedCustomer(customer);
-                setErrors((prev) => ({ ...prev, selectedCustomer: "" }));
-              }}
-              className="w-full rounded-lg border px-3 py-2.5 text-sm"
-            >
-              <option value="" disabled>
-                Select a customer
-              </option>
-              {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.name} - {customer.address}
-                </option>
-              ))}
-            </select>
-            {errors.selectedCustomer && (
-              <p className="text-xs text-red-500 mt-1">{errors.selectedCustomer}</p>
+<div className="space-y-2">
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    Select Customer
+  </label>
+
+  <div className="relative">
+    <Listbox value={selectedCustomer} onChange={setSelectedCustomer}>
+      {/* Button */}
+      <Listbox.Button className="w-full flex justify-between items-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+        {selectedCustomer
+          ? `${selectedCustomer.name} — ${selectedCustomer.address}`
+          : "Select a customer"}
+
+        {/* Down Arrow Icon (no external libs) */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 text-gray-400 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </Listbox.Button>
+
+      {/* Dropdown Options */}
+      <Listbox.Options className="absolute mt-2 w-full max-h-60 overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg z-10">
+        {customers.map((customer) => (
+          <Listbox.Option
+            key={customer.id}
+            value={customer}
+            as={Fragment}
+          >
+            {({ active, selected }) => (
+              <li
+                className={`cursor-pointer select-none px-4 py-2 text-sm ${
+                  active
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-gray-800"
+                } ${selected ? "font-semibold" : ""}`}
+              >
+                {customer.name} — {customer.address}
+              </li>
             )}
-          </div>
+          </Listbox.Option>
+        ))}
+      </Listbox.Options>
+    </Listbox>
+  </div>
+
+  {errors.selectedCustomer && (
+    <p className="text-xs text-red-500 mt-1">{errors.selectedCustomer}</p>
+  )}
+</div>
+
         )}
 
         {/* Job Date, Price, Notes */}

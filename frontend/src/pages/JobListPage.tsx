@@ -15,6 +15,14 @@ interface Job {
   invoiceNumber?: string;
 }
 
+function isSameDay(d1: Date, d2: Date) {
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
 export default function JobListPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,21 +86,37 @@ export default function JobListPage() {
 
   if (jobs.length === 0) {
     return (
-      <div className="p-6 text-gray-600">
-        <p>No jobs found.</p>
-        <button
-          onClick={() => navigate("/jobs/new")}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          + Create New Job
-        </button>
-      </div>
+<div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-8">
+  {/* Back Button */}
+  <button
+    onClick={() => navigate("/dashboard")}
+    className="absolute top-8 left-8 text-sm text-gray-600 hover:text-black transition"
+  >
+    ← Back to Dashboard
+  </button>
+
+  {/* Empty State */}
+  <div className="text-center space-y-6">
+    <h1 className="text-2xl font-bold text-gray-900">Job List</h1>
+    <p className="text-gray-600 text-base">No jobs found.</p>
+    <button
+      onClick={() => navigate("/jobs/new")}
+      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-base shadow hover:bg-blue-700 active:scale-95 transition"
+    >
+      + Create New Job
+    </button>
+  </div>
+</div>
+
+
     );
   }
 
-  const now = new Date();
-  const upcoming = jobs.filter((j) => new Date(j.jobDate) > now && !j.paid);
-  const unpaid = jobs.filter((j) => new Date(j.jobDate) <= now && !j.paid);
+  const today = new Date();
+
+  const todayJobs = jobs.filter((j) => isSameDay(new Date(j.jobDate), today) && !j.paid);
+  const upcoming = jobs.filter((j) => new Date(j.jobDate) > today && !j.paid);
+  const unpaid = jobs.filter((j) => new Date(j.jobDate) < today && !j.paid);
   const paid = jobs.filter((j) => j.paid);
 
   return (
@@ -114,6 +138,13 @@ export default function JobListPage() {
       </header>
 
       <JobSection
+        title="Today"
+        color="blue"
+        jobs={todayJobs}
+        onMarkAsPaid={(job) => setConfirmAction({ type: "paid", job })}
+        onDelete={(job) => setConfirmAction({ type: "delete", job })}
+      />
+      <JobSection
         title="Upcoming"
         color="blue"
         jobs={upcoming}
@@ -121,7 +152,7 @@ export default function JobListPage() {
         onDelete={(job) => setConfirmAction({ type: "delete", job })}
       />
       <JobSection
-        title="Unpaid"
+        title="Unpaid (Past)"
         color="red"
         jobs={unpaid}
         onMarkAsPaid={(job) => setConfirmAction({ type: "paid", job })}
@@ -140,14 +171,12 @@ export default function JobListPage() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {confirmAction.type === "delete"
-                ? "Delete Job"
-                : "Mark Job as Paid"}
+              {confirmAction.type === "delete" ? "Delete Job" : "Mark Job as Paid"}
             </h2>
             <p className="text-sm text-gray-600 mb-6">
               Are you sure you want to{" "}
-              {confirmAction.type === "delete" ? "delete" : "mark as paid"}{" "}
-              this job for <span className="font-medium">{confirmAction.job.customerName}</span>?
+              {confirmAction.type === "delete" ? "delete" : "mark as paid"} this job for{" "}
+              <span className="font-medium">{confirmAction.job.customerName}</span>?
             </p>
             <div className="flex justify-end gap-3">
               <button
@@ -165,11 +194,10 @@ export default function JobListPage() {
                   }
                   setConfirmAction(null);
                 }}
-                className={`px-4 py-2 rounded-lg text-white font-medium shadow ${
-                  confirmAction.type === "delete"
-                    ? "bg-red-600 hover:bg-red-700"
-                    : "bg-green-600 hover:bg-green-700"
-                } transition`}
+                className={`px-4 py-2 rounded-lg text-white font-medium shadow ${confirmAction.type === "delete"
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-green-600 hover:bg-green-700"
+                  } transition`}
               >
                 Confirm
               </button>

@@ -65,7 +65,7 @@ export default function JobDetailsPage() {
       if (!res.ok) throw new Error("Failed to update job");
 
       toast.success("Job updated successfully");
-      navigate("/jobs");
+      navigate(-1);
     } catch (err) {
       console.error(err);
       toast.error("Error saving job");
