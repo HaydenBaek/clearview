@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ClearViewBackendApplication {
 
     public static void main(String[] args) {
+
+
         SpringApplication.run(ClearViewBackendApplication.class, args);
+        System.out.println("🔍 DB_URL = " + System.getenv("DB_URL"));
     }
 }
