@@ -10,7 +10,7 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const url = "http://localhost:8080/api/auth/login";
+    const url = `${import.meta.env.VITE_API_URL}/api/auth/login`;
 
     try {
       const res = await fetch(url, {

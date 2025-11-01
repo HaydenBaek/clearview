@@ -22,7 +22,7 @@ export default function MainPage({ onLogout }: MainPageProps) {
     const fetchJobs = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8080/api/jobs", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch jobs");

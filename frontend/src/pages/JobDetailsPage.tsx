@@ -23,7 +23,7 @@ export default function JobDetailsPage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch(`http://localhost:8080/api/jobs/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/jobs/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,7 +53,7 @@ export default function JobDetailsPage() {
     setSaving(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/api/jobs/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

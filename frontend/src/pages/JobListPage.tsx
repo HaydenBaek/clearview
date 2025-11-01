@@ -32,9 +32,10 @@ export default function JobListPage() {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/api/jobs", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!res.ok) throw new Error("Failed to fetch jobs");
       const data = await res.json();
       setJobs(data);
@@ -53,7 +54,7 @@ export default function JobListPage() {
   const markAsPaid = async (jobId: number) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/api/jobs/${jobId}/mark-paid`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs/${jobId}/mark-paid`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -69,7 +70,7 @@ export default function JobListPage() {
   const deleteJob = async (jobId: number) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/api/jobs/${jobId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs/${jobId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -86,27 +87,27 @@ export default function JobListPage() {
 
   if (jobs.length === 0) {
     return (
-<div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-8">
-  {/* Back Button */}
-  <button
-    onClick={() => navigate("/dashboard")}
-    className="absolute top-8 left-8 text-sm text-gray-600 hover:text-black transition"
-  >
-    ← Back to Dashboard
-  </button>
+      <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-8">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="absolute top-8 left-8 text-sm text-gray-600 hover:text-black transition"
+        >
+          ← Back to Dashboard
+        </button>
 
-  {/* Empty State */}
-  <div className="text-center space-y-6">
-    <h1 className="text-2xl font-bold text-gray-900">Job List</h1>
-    <p className="text-gray-600 text-base">No jobs found.</p>
-    <button
-      onClick={() => navigate("/jobs/new")}
-      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-base shadow hover:bg-blue-700 active:scale-95 transition"
-    >
-      + Create New Job
-    </button>
-  </div>
-</div>
+        {/* Empty State */}
+        <div className="text-center space-y-6">
+          <h1 className="text-2xl font-bold text-gray-900">Job List</h1>
+          <p className="text-gray-600 text-base">No jobs found.</p>
+          <button
+            onClick={() => navigate("/jobs/new")}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-base shadow hover:bg-blue-700 active:scale-95 transition"
+          >
+            + Create New Job
+          </button>
+        </div>
+      </div>
 
 
     );

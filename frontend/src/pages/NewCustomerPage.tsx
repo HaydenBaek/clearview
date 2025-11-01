@@ -34,7 +34,7 @@ export default function NewCustomerPage() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/api/customers", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,6 +42,7 @@ export default function NewCustomerPage() {
         },
         body: JSON.stringify(newCustomer),
       });
+
 
       if (!res.ok) throw new Error("Failed to save customer");
 
@@ -83,9 +84,8 @@ export default function NewCustomerPage() {
               setName(e.target.value);
               setErrors((prev) => ({ ...prev, name: "" }));
             }}
-            className={`w-full rounded-lg border ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            } px-3 py-2.5 text-sm shadow-sm`}
+            className={`w-full rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"
+              } px-3 py-2.5 text-sm shadow-sm`}
             placeholder="Enter customer name"
           />
           {errors.name && (
@@ -130,9 +130,8 @@ export default function NewCustomerPage() {
               setAddress(e.target.value);
               setErrors((prev) => ({ ...prev, address: "" }));
             }}
-            className={`w-full rounded-lg border ${
-              errors.address ? "border-red-500" : "border-gray-300"
-            } px-3 py-2.5 text-sm shadow-sm`}
+            className={`w-full rounded-lg border ${errors.address ? "border-red-500" : "border-gray-300"
+              } px-3 py-2.5 text-sm shadow-sm`}
             placeholder="Enter address"
           />
           {errors.address && (
@@ -143,11 +142,10 @@ export default function NewCustomerPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold text-base shadow-md transition-colors duration-200 ${
-            isSubmitting
+          className={`w-full py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold text-base shadow-md transition-colors duration-200 ${isSubmitting
               ? "opacity-75 cursor-not-allowed"
               : "hover:from-blue-600 hover:to-indigo-700 active:scale-95"
-          }`}
+            }`}
         >
           {isSubmitting ? "Creating..." : "Create Customer"}
         </button>

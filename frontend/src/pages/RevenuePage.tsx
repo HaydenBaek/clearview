@@ -16,9 +16,10 @@ export default function RevenuePage() {
     const fetchRevenue = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8080/api/jobs/revenue", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs/revenue`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
+
         if (!res.ok) throw new Error("Failed to fetch revenue data");
         setData(await res.json());
       } catch (err) {
@@ -66,33 +67,33 @@ export default function RevenuePage() {
       </div>
 
       {/* Monthly Breakdown */}
-{/* Monthly Breakdown */}
-<div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-  <h2 className="text-lg font-semibold text-gray-800 mb-4">Monthly Breakdown</h2>
-  <div className="space-y-3">
-    {data.map((item, index) => (
-      <div key={index} className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-        <div className="font-semibold text-gray-900 mb-3">{item.month}</div>
-        <div className="grid grid-cols-3 gap-2 text-sm">
-          <div>
-            <div className="text-gray-500 text-xs mb-1">Paid</div>
-            <div className="text-green-600 font-medium">${item.paid.toFixed(2)}</div>
-          </div>
-          <div>
-            <div className="text-gray-500 text-xs mb-1">Unpaid</div>
-            <div className="text-red-600 font-medium">${item.unpaid.toFixed(2)}</div>
-          </div>
-          <div>
-            <div className="text-gray-500 text-xs mb-1">Total</div>
-            <div className="text-blue-600 font-medium">
-              ${(item.paid + item.unpaid).toFixed(2)}
+      {/* Monthly Breakdown */}
+      <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Monthly Breakdown</h2>
+        <div className="space-y-3">
+          {data.map((item, index) => (
+            <div key={index} className="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <div className="font-semibold text-gray-900 mb-3">{item.month}</div>
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                <div>
+                  <div className="text-gray-500 text-xs mb-1">Paid</div>
+                  <div className="text-green-600 font-medium">${item.paid.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-gray-500 text-xs mb-1">Unpaid</div>
+                  <div className="text-red-600 font-medium">${item.unpaid.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-gray-500 text-xs mb-1">Total</div>
+                  <div className="text-blue-600 font-medium">
+                    ${(item.paid + item.unpaid).toFixed(2)}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
     </div>
   );
 }

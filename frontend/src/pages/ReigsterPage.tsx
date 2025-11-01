@@ -11,12 +11,11 @@ export default function RegisterPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8080/api/auth/register", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ username, password }),
       });
-
       const text = await res.text();
       let data: any;
       try {

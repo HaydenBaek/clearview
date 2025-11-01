@@ -1,5 +1,5 @@
 // src/pages/MapPage.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Map, { Marker } from "react-map-gl/mapbox";
 import type { MapMouseEvent } from "react-map-gl/mapbox";

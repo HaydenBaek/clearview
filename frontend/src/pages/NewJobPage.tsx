@@ -15,7 +15,7 @@ type Customer = {
 export default function NewJobPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const jobData = location.state as { address?: string } | null;
 
   const [tab, setTab] = useState<"manual" | "customer">("manual");
@@ -23,7 +23,7 @@ export default function NewJobPage() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   const [customerName, setCustomerName] = useState("");
-  const [address, setAddress] = useState(jobData?.address || ""); 
+  const [address, setAddress] = useState(jobData?.address || "");
   const [jobDate, setJobDate] = useState("");
   const [price, setPrice] = useState("");
   const [notes, setNotes] = useState("");
@@ -34,7 +34,7 @@ export default function NewJobPage() {
     const fetchCustomers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8080/api/customers", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customers`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch customers");
@@ -86,7 +86,7 @@ export default function NewJobPage() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/api/jobs", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/jobs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,17 +132,15 @@ export default function NewJobPage() {
       {/* Tabs */}
       <div className="flex mb-6 bg-white rounded-xl shadow border border-gray-200">
         <button
-          className={`flex-1 py-3 text-sm font-medium rounded-l-xl transition-colors ${
-            tab === "manual" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"
-          }`}
+          className={`flex-1 py-3 text-sm font-medium rounded-l-xl transition-colors ${tab === "manual" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"
+            }`}
           onClick={() => setTab("manual")}
         >
           Manual
         </button>
         <button
-          className={`flex-1 py-3 text-sm font-medium rounded-r-xl transition-colors ${
-            tab === "customer" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"
-          }`}
+          className={`flex-1 py-3 text-sm font-medium rounded-r-xl transition-colors ${tab === "customer" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"
+            }`}
           onClick={() => setTab("customer")}
         >
           From Customer
@@ -165,9 +163,8 @@ export default function NewJobPage() {
                   setCustomerName(e.target.value);
                   setErrors((prev) => ({ ...prev, customerName: "" }));
                 }}
-                className={`w-full rounded-lg border ${
-                  errors.customerName ? "border-red-500" : "border-gray-300"
-                } px-3 py-2.5 text-sm`}
+                className={`w-full rounded-lg border ${errors.customerName ? "border-red-500" : "border-gray-300"
+                  } px-3 py-2.5 text-sm`}
                 placeholder="Enter customer name"
               />
               {errors.customerName && (
@@ -187,9 +184,8 @@ export default function NewJobPage() {
                   setAddress(e.target.value);
                   setErrors((prev) => ({ ...prev, address: "" }));
                 }}
-                className={`w-full rounded-lg border ${
-                  errors.address ? "border-red-500" : "border-gray-300"
-                } px-3 py-2.5 text-sm`}
+                className={`w-full rounded-lg border ${errors.address ? "border-red-500" : "border-gray-300"
+                  } px-3 py-2.5 text-sm`}
                 placeholder="Enter address"
               />
               {errors.address && (
@@ -198,61 +194,60 @@ export default function NewJobPage() {
             </div>
           </div>
         ) : (
-<div className="space-y-2">
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    Select Customer
-  </label>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Customer
+            </label>
 
-  <div className="relative">
-    <Listbox value={selectedCustomer} onChange={setSelectedCustomer}>
-      {/* Button */}
-      <Listbox.Button className="w-full flex justify-between items-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-        {selectedCustomer
-          ? `${selectedCustomer.name} — ${selectedCustomer.address}`
-          : "Select a customer"}
+            <div className="relative">
+              <Listbox value={selectedCustomer} onChange={setSelectedCustomer}>
+                {/* Button */}
+                <Listbox.Button className="w-full flex justify-between items-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                  {selectedCustomer
+                    ? `${selectedCustomer.name} — ${selectedCustomer.address}`
+                    : "Select a customer"}
 
-        {/* Down Arrow Icon (no external libs) */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 text-gray-400 ml-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </Listbox.Button>
+                  {/* Down Arrow Icon (no external libs) */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-gray-400 ml-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </Listbox.Button>
 
-      {/* Dropdown Options */}
-      <Listbox.Options className="absolute mt-2 w-full max-h-60 overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg z-10">
-        {customers.map((customer) => (
-          <Listbox.Option
-            key={customer.id}
-            value={customer}
-            as={Fragment}
-          >
-            {({ active, selected }) => (
-              <li
-                className={`cursor-pointer select-none px-4 py-2 text-sm ${
-                  active
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-gray-800"
-                } ${selected ? "font-semibold" : ""}`}
-              >
-                {customer.name} — {customer.address}
-              </li>
+                {/* Dropdown Options */}
+                <Listbox.Options className="absolute mt-2 w-full max-h-60 overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg z-10">
+                  {customers.map((customer) => (
+                    <Listbox.Option
+                      key={customer.id}
+                      value={customer}
+                      as={Fragment}
+                    >
+                      {({ active, selected }) => (
+                        <li
+                          className={`cursor-pointer select-none px-4 py-2 text-sm ${active
+                              ? "bg-blue-50 text-blue-600"
+                              : "text-gray-800"
+                            } ${selected ? "font-semibold" : ""}`}
+                        >
+                          {customer.name} — {customer.address}
+                        </li>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Listbox>
+            </div>
+
+            {errors.selectedCustomer && (
+              <p className="text-xs text-red-500 mt-1">{errors.selectedCustomer}</p>
             )}
-          </Listbox.Option>
-        ))}
-      </Listbox.Options>
-    </Listbox>
-  </div>
-
-  {errors.selectedCustomer && (
-    <p className="text-xs text-red-500 mt-1">{errors.selectedCustomer}</p>
-  )}
-</div>
+          </div>
 
         )}
 
@@ -276,9 +271,8 @@ export default function NewJobPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold text-base shadow-md ${
-            isSubmitting ? "opacity-75 cursor-not-allowed" : "hover:from-blue-600 hover:to-indigo-700 active:scale-95"
-          }`}
+          className={`w-full py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold text-base shadow-md ${isSubmitting ? "opacity-75 cursor-not-allowed" : "hover:from-blue-600 hover:to-indigo-700 active:scale-95"
+            }`}
         >
           {isSubmitting ? "Creating..." : "Create Job"}
         </button>
@@ -314,9 +308,8 @@ function JobFormFields({
           type="date"
           value={jobDate}
           onChange={(e) => setJobDate(e.target.value)}
-          className={`w-full rounded-lg border ${
-            errors.jobDate ? "border-red-500" : "border-gray-300"
-          } px-3 py-2.5 text-sm`}
+          className={`w-full rounded-lg border ${errors.jobDate ? "border-red-500" : "border-gray-300"
+            } px-3 py-2.5 text-sm`}
         />
         {errors.jobDate && <p className="text-xs text-red-500 mt-1">{errors.jobDate}</p>}
       </div>
@@ -329,9 +322,8 @@ function JobFormFields({
           onChange={(e) => setPrice(e.target.value)}
           min="0"
           step="0.01"
-          className={`w-full rounded-lg border ${
-            errors.price ? "border-red-500" : "border-gray-300"
-          } px-3 py-2.5 text-sm`}
+          className={`w-full rounded-lg border ${errors.price ? "border-red-500" : "border-gray-300"
+            } px-3 py-2.5 text-sm`}
           placeholder="Enter price"
         />
         {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price}</p>}

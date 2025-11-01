@@ -88,7 +88,7 @@ describe("JobDetailsPage", () => {
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/jobs/1",
+        `${import.meta.env.VITE_API_URL}/api/jobs/1`,
         expect.objectContaining({
           method: "PUT",
         })
