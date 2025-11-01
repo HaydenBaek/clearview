@@ -23,8 +23,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    
-    "types": ["mapbox-gl"]
+    "types": ["vite/client", "mapbox-gl"]
   },
-  "include": ["src"]
+  "include": ["src", "vite-env.d.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/setupTests.ts"
+  ]
 }
