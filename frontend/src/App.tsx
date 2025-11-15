@@ -1,4 +1,3 @@
-// src/App.tsx
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
@@ -9,8 +8,11 @@ import NewJobPage from "./pages/NewJobPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 import JobListPage from "./pages/JobListPage";
 import NewCustomerPage from "./pages/NewCustomerPage";
-import type { JSX } from "react";
 import RevenuePage from "./pages/RevenuePage";
+import type { JSX } from "react";
+
+import BackendLoading from "./components/BackendLoading";
+import { useBackendReady } from "./hooks/useBackendReady";
 
 // Protect private routes
 function ProtectedRoute({ children }: { children: JSX.Element }) {
@@ -32,6 +34,14 @@ function DashboardWrapper() {
 }
 
 export default function App() {
+  const loading = useBackendReady();
+
+  // SHOW THIS FIRST (during Render cold start)
+  if (loading) {
+    return <BackendLoading />;
+  }
+
+  // MAIN APP ROUTER
   return (
     <BrowserRouter>
       <Routes>
@@ -49,6 +59,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/map"
           element={
@@ -57,6 +68,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/jobs/new"
           element={
@@ -65,6 +77,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/jobs/:id"
           element={
@@ -73,6 +86,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/jobs"
           element={
@@ -81,6 +95,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/customers/new"
           element={
@@ -89,6 +104,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/revenue"
           element={
